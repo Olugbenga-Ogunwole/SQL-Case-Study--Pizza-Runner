@@ -1,4 +1,3 @@
-**Query #1**
 -- 1. How many pizza were ordered --
 
     SELECT COUNT(pizza_id) as pizza_ordered
@@ -49,7 +48,6 @@
 
 -- 5. How many Vegetarian and Meatlovers were ordered by each customer?
 
-
     SELECT  c.customer_id, p.pizza_name, COUNT(c.order_id) AS pizza_orderded
     FROM pizza_runner.runner_orders as r
     JOIN pizza_runner.customer_orders as c ON r.order_id = c.order_id
@@ -67,5 +65,22 @@
 | 103         | Vegetarian | 1              |
 | 104         | Meatlovers | 3              |
 | 105         | Vegetarian | 1              |
+
+
+-- 6. What was the maximum number of pizzas delivered in a single order?
+
+
+    SELECT r.order_id, COUNT(pizza_id) as max_delivery_per_order
+    FROM pizza_runner.customer_orders c
+    JOIN pizza_runner.runner_orders r ON c.order_id=r.order_id
+    WHERE cancellation IS NULL
+    GROUP BY r.order_id
+    ORDER BY max_delivery_per_order DESC;
+
+| order_id | max_delivery_per_order |
+| -------- | ---------------------- |
+| 4        | 3                      |
+| 3        | 2                      |
+| 5        | 1                      |
 
 
