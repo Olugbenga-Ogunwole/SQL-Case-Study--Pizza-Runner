@@ -31,3 +31,41 @@
 | 1         | 1                 |
 | 2         | 1                 |
 | 3         | 1                 |
+
+
+-- 4. How many of each type of pizza was delivered?
+
+    SELECT  c.pizza_id, COUNT(r.order_id) AS sucessful_delivery
+    FROM pizza_runner.runner_orders as r
+    JOIN pizza_runner.customer_orders as c ON r.order_id = c.order_id
+    WHERE cancellation IS NULL
+    GROUP BY c.pizza_id;
+
+| pizza_id | sucessful_delivery |
+| -------- | ------------------ |
+| 1        | 4                  |
+| 2        | 2                  |
+
+
+-- 5. How many Vegetarian and Meatlovers were ordered by each customer?
+
+
+    SELECT  c.customer_id, p.pizza_name, COUNT(c.order_id) AS pizza_orderded
+    FROM pizza_runner.runner_orders as r
+    JOIN pizza_runner.customer_orders as c ON r.order_id = c.order_id
+    JOIN pizza_runner.pizza_names as p  ON c.pizza_id = p.pizza_id
+    GROUP BY c.customer_id,p.pizza_name
+    ORDER BY c.customer_id;
+
+| customer_id | pizza_name | pizza_orderded |
+| ----------- | ---------- | -------------- |
+| 101         | Meatlovers | 2              |
+| 101         | Vegetarian | 1              |
+| 102         | Meatlovers | 2              |
+| 102         | Vegetarian | 1              |
+| 103         | Meatlovers | 3              |
+| 103         | Vegetarian | 1              |
+| 104         | Meatlovers | 3              |
+| 105         | Vegetarian | 1              |
+
+
