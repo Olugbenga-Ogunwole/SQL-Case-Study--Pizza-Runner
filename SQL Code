@@ -83,4 +83,19 @@
 | 3        | 2                      |
 | 5        | 1                      |
 
+-- 7. For each customer, how many delivered pizzas had at least 1 change and how many had no changes?
+
+WITH delivered_pizzas AS (SELECT c.*, r.cancellation
+		FROM  pizza_runner.customer_orders c
+		LEFT JOIN  pizza_runner.runner_orders r ON c.order_id = r.order_id
+		WHERE cancellation IS NULL)
+SELECT customer_id,
+ CASE WHEN exclusions IS NULL AND extras IS NULL THEN count(pizza_id)
+ END AS no_change_made,
+ CASE WHEN exclusions IS NOT NULL OR extras IS NOT NULL THEN count(pizza_id)
+END AS changes_made
+FROM delivered_pizzas
+GROUP BY customer_id;
+
+
 
